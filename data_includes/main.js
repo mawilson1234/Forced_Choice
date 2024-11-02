@@ -14,21 +14,55 @@ var centered_justified_style = {
 	width: '30em'
 }
 
+var answer_style = {
+	'text-align': 'justify', 
+	margin: '0 auto', 
+	'margin-bottom': '2em',
+	width: '30em'
+}
+
+var prompt_style = {
+	'text-align': 'justify', 
+	margin: '0 auto',
+	'margin-top': '3em',
+	'margin-bottom': '0.5em',
+	width: '30em'
+}
+
 Sequence(
 	'instructions',
+	'preload',
+	'preloaded',
 	randomize('trial') ,
 	SendResults(),
 	'end'
+)
+
+CheckPreloaded('trial')
+	.label('preload')
+
+newTrial('preloaded',
+	newText('The images have finished preloading. Click below when you are ready to begin the experiment.')
+		.css(centered_justified_style)
+		.print()
+	,
+	
+	newButton('Click when you are ready to begin')
+		.css('font-family', 'Helvetica, sans-serif')
+		.css('font-size', '16px')
+		.center()
+		.print()
+		.wait()
 )
 
 newTrial('instructions',
 	fullscreen(),
 	
 	newText(
-		`<p>Welcome! In this experiment, we want you to read sentences one word at a time. When you are finished reading a word, push the space bar to show the next word.</p><p>
-			Afterward, you will see a question about the sentence you read.</p><p>
-			Push the "f" key if you think the answer on the left is correct, and "j" if you think the answer on the right is correct.</p><p>
-			Try to read at a natural pace, and respond to the questions as quickly and accurately as possible.</p><p>
+		`<p>Welcome! In this experiment, you will see either a sentence, an image, or a sentence and an image. Once you have finished reading the sentence and/or looking at the image, you should click the button below them to proceed.</p><p>
+			Then, you will see another sentence related to the scenario described by the sentence and/or shown in the image.</p><p>
+			Below that will be three sentences. Your task is to choose which of those three sentences has the same meaning as the sentence above.</p><p>
+			Try to respond to the questions as quickly and accurately as possible.</p><p>
 		`
 	)
 		.css(centered_justified_style)
@@ -43,15 +77,18 @@ newTrial('instructions',
 		.wait()
 ).setOption('countsForProgressBar', false)
 
-Template('stimuli.csv', currentrow => 
-	newTrial(
+Template('stimuli.csv', currentrow => {
+	size = currentrow.IMAGE === 'blank.jpg' ? 0 : 500
+	canvas_size = size === 0 ? 0 : 550
+	
+	return newTrial(
 		'trial',
 		
 		newImage('image', currentrow.IMAGE)
-			.size(200, 200)
+			.size(size, size)
 		,
 		
-		newCanvas('image', 300, 300)
+		newCanvas('image', canvas_size, canvas_size)
 			.center()
 			.add('center at 50%', 'middle at 50%', getImage('image'))
 			.print()
@@ -76,49 +113,71 @@ Template('stimuli.csv', currentrow =>
 			.remove()
 		,
 		
+		newVar('RT')
+			.global()
+			.set(v => Date.now())
+		,
+		
 		newText('question', currentrow.QUESTION)
-			.css(centered_justified_style)
+			.center()
+			.css('text-size', '16px')
 			.print()
 		,
 		
-		newText('a1', currentrow.FIRST_ANSWER)
-			print()
+		newText(
+			'prompt', 
+			'Which sentence has the same meaning as the sentence above? (Click to answer.)'
+		)
+			.css(prompt_style)
+			.print()
 		,
 		
-		newText('a2', currentrow.SECOND_ANSWER)
-			print()
+		newText(currentrow.FIRST_ANSWER_TYPE, '(a) ' + currentrow.FIRST_ANSWER)
+			.css(answer_style)
+			.print()
 		,
 		
-		newText('a3', currentrow.THIRD_ANSWER)
-			print()
+		newText(currentrow.SECOND_ANSWER_TYPE, '(b) ' + currentrow.SECOND_ANSWER)
+			.css(answer_style)
+			.print()
+		,
+		
+		newText(currentrow.THIRD_ANSWER_TYPE, '(c) ' + currentrow.THIRD_ANSWER)
+			.css(answer_style)
+			.print()
 		,
 		
 		newSelector('answer')
 			.add(getText('a1'), getText('a2'), getText('a3'))
 			.wait()
 			.log()
+		,
+		
+		getVar('RT')
+			.set(v => Date.now() - v)
 	)
-		.log('item',               currentrow.ITEM)
-		.log('sentence',           currentrow.SENTENCE)
-		.log('image',              currentrow.IMAGE)
-		.log('condition',          currentrow.CONDITION)
-		.log('question',           currentrow.QUESTION)
-		.log('first_answer',       currentrow.FIRST_ANSWER)
-		.log('second_answer',      currentrow.SECOND_ANSWER)
-		.log('third_answer',       currentrow.THIRD_ANSWER)
+		.log('item',			   currentrow.ITEM)
+		.log('sentence',		   currentrow.SENTENCE)
+		.log('image',			   currentrow.IMAGE)
+		.log('condition',		   currentrow.CONDITION)
+		.log('question',		   currentrow.QUESTION)
+		.log('response_time',      getVar('RT'))
+		.log('first_answer',	   currentrow.FIRST_ANSWER)
+		.log('second_answer',	   currentrow.SECOND_ANSWER)
+		.log('third_answer',	   currentrow.THIRD_ANSWER)
 		.log('first_answer_type',  currentrow.FIRST_ANSWER_TYPE)
 		.log('second_answer_type', currentrow.SECOND_ANSWER_TYPE)
 		.log('third_answer_type',  currentrow.THIRD_ANSWER_TYPE)
-)
+})
 
 newTrial('end',
 	exitFullscreen()
 	,
 	
 	newText('The is the end of the experiment, you can now close this window. Thank you!')
-		.css(trial_style)
+		.css(centered_justified_style)
 		.center()
-		.print('center at 50%', 'bottom at 80%')
+		.print()
 	,
 	
 	newButton()
