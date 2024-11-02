@@ -148,7 +148,11 @@ Template('stimuli.csv', currentrow => {
 		,
 		
 		newSelector('answer')
-			.add(getText('a1'), getText('a2'), getText('a3'))
+			.add(
+				getText(currentrow.FIRST_ANSWER_TYPE), 
+				getText(currentrow.SECOND_ANSWER_TYPE), 
+				getText(currentrow.THIRD_ANSWER_TYPE)
+			)
 			.wait()
 			.log()
 		,
