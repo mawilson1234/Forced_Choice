@@ -178,7 +178,7 @@ newTrial('end',
 	exitFullscreen()
 	,
 	
-	newText('The is the end of the experiment, you can now close this window. Thank you!')
+	newText('This is the end of the experiment, you can now close this window. Thank you!')
 		.css(centered_justified_style)
 		.center()
 		.print()
