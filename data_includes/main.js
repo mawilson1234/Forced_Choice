@@ -30,6 +30,7 @@ var prompt_style = {
 }
 
 Sequence(
+	'demographics',
 	'instructions',
 	'preload',
 	'preloaded',
@@ -38,22 +39,28 @@ Sequence(
 	'end'
 )
 
-CheckPreloaded('trial')
-	.label('preload')
-
-newTrial('preloaded',
-	newText('The images have finished preloading. Click below when you are ready to begin the experiment.')
+newTrial('demographics',
+	newHtml('demographics', 'background.html')
 		.css(centered_justified_style)
+		.radioWarning("You must select an option for '%name%'.")
+		.inputWarning("You must provide an answer for '%name'.")
 		.print()
+		.log()
 	,
 	
-	newButton('Click when you are ready to begin')
+	newButton('Next', 'Next')
 		.css('font-family', 'Helvetica, sans-serif')
 		.css('font-size', '16px')
 		.center()
 		.print()
-		.wait()
-)
+		.wait(
+			getHtml('demographics')
+				.test.complete()
+				.failure(
+					getHtml('demographics').warn()
+				)
+		)
+).setOption('countsForProgressBar', false)
 
 newTrial('instructions',
 	fullscreen(),
@@ -76,6 +83,23 @@ newTrial('instructions',
 		.print()
 		.wait()
 ).setOption('countsForProgressBar', false)
+
+CheckPreloaded('trial')
+	.label('preload')
+
+newTrial('preloaded',
+	newText('The images have finished preloading. Click below when you are ready to begin the experiment.')
+		.css(centered_justified_style)
+		.print()
+	,
+	
+	newButton('Click when you are ready to begin')
+		.css('font-family', 'Helvetica, sans-serif')
+		.css('font-size', '16px')
+		.center()
+		.print()
+		.wait()
+)
 
 Template('stimuli.csv', currentrow => {
 	size = currentrow.IMAGE === 'blank.jpg' ? 0 : 500
