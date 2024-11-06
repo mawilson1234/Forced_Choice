@@ -1,0 +1,46 @@
+<style type="text/css">
+	table.myTable{
+		border-collapse: separate;
+		border-spacing: 10px 30px;
+	}
+	textarea{
+		width:100%;
+	}
+</style>
+
+<b>Please complete this short demographic questionnaire before beginning the experiment. Please answer the questions accurately, as they will help in interpreting the results of the experiment.</b>
+
+<table class='myTable'>
+	<tbody>
+		<tr>
+			<td width="50%">What is your name?</td>
+			<td>
+				<textarea name="demographics_name" class="obligatory" rows="1" type="text"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td width="50%">What is your age?</td>
+			<td> 
+				<input name="demographics_age" class="obligatory" rows="1" type="number" minlength="1" min="1" max="120" maxlength="3" style="width:100%; min-width: 100%"></input>
+			</td>
+		</tr>
+		<tr>
+			<td width="50%">What is your sex?</td>
+			<td>
+				<textarea name="demographics_gender" class="obligatory" rows="1" type="text"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td width="50%">What is your native language (i.e., the language or languages you learned first)?</td>
+			<td>
+				<textarea name="demographics_nativelanguage" class="obligatory" rows="3" type="text"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td width="50%">Do you now or have you ever suffered from or been treated for neurological or language impairments? If so, please specify. If not, please enter "no".</td>
+			<td>
+				<textarea name="demographics_languagedisorder" rows="6" type="text" class="obligatory"></textarea>
+			</td>
+		</tr>
+	</tbody>
+</table>
