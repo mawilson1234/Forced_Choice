@@ -184,6 +184,7 @@ Template('stimuli.csv', currentrow => {
 		getVar('RT')
 			.set(v => Date.now() - v)
 	)
+		.log('group',              currentrow.group)
 		.log('item',			   currentrow.ITEM)
 		.log('sentence',		   currentrow.SENTENCE)
 		.log('image',			   currentrow.IMAGE)
