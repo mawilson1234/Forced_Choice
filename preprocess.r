@@ -68,7 +68,9 @@ demographics <- df |>
 	filter(grepl('^demographics', Parameter)) |>
 	select(participant, Parameter, Value) |>
 	mutate(
-		Parameter = gsub('^demographics_', '', Parameter)
+		Parameter = gsub('^demographics_', '', Parameter),
+		Value = Value |> trimws(),
+		Value = gsub('%2C', ',', Value)
 	) |>
 	pivot_wider(
 		names_from = Parameter,
@@ -85,11 +87,15 @@ df <- df |>
 		Value
 	) |>
 	rename(response = Value) |>
-	mutate(sentence = gsub('%2C', ',', sentence)) |>
+	mutate(
+		sentence = gsub('%2C', ',', sentence),
+		condition = condition |> trimws()
+	) |>
 	select(
 		participant, group, item, sentence, image, condition,
 		question, response, response_time, first_answer:third_answer_type
-	)
+	) |>
+	arrange(participant, item)
 
 df |>
 	fwrite('cleaned_results.csv', row.names = FALSE)
