@@ -30,9 +30,12 @@ var prompt_style = {
 }
 
 Sequence(
-	'instructions',
+	'demographics',
+	'instructions1',
 	'preload',
 	'preloaded',
+	randomize('preexposure'),
+	'instructions2',
 	randomize('trial') ,
 	SendResults(),
 	'end'
@@ -55,14 +58,37 @@ newTrial('preloaded',
 		.wait()
 )
 
-newTrial('instructions',
+newTrial('demographics',
+	newHtml('demographics', 'background.html')
+		.css(centered_justified_style)
+		.radioWarning("You must select an option for '%name%'.")
+		.inputWarning("You must provide an answer for '%name%'.")
+		.print()
+		.log()
+	,
+	
+	newButton('Next', 'Next')
+		.css('font-family', 'Helvetica, sans-serif')
+		.css('font-size', '16px')
+		.center()
+		.print()
+		.wait(
+			getHtml('demographics')
+				.test.complete()
+				.failure(
+					getHtml('demographics').warn()
+				)
+		)
+).setOption('countsForProgressBar', false)
+
+newTrial('instructions1',
 	fullscreen(),
 	
 	newText(
-		`<p>Welcome! In this experiment, you will see either a sentence, an image, or a sentence and an image. Once you have finished reading the sentence and/or looking at the image, you should click the button below them to proceed.</p><p>
-			Then, you will see another sentence related to the scenario described by the sentence and/or shown in the image.</p><p>
-			Below that will be three sentences. Your task is to choose which of those three sentences has the same meaning as the sentence above.</p><p>
-			Try to respond to the questions as quickly and accurately as possible.</p><p>
+		`<p>Welcome! In this experiment, you will first read a series of sentences. Some of the sentences
+		 may contain words you don't know. Try to read and understand the sentences as best you can.</p>
+		<p>After you have read the sentences, you will be shown a series of pictures, and should pick the word
+		that matches what is in the picture.</p>
 		`
 	)
 		.css(centered_justified_style)
@@ -77,26 +103,38 @@ newTrial('instructions',
 		.wait()
 ).setOption('countsForProgressBar', false)
 
-Template('stimuli.csv', currentrow => {
-	size = currentrow.IMAGE === 'blank.jpg' ? 0 : 500
-	canvas_size = size === 0 ? 0 : 550
+newTrial('instructions2',
+	fullscreen(),
 	
-	return newTrial(
-		'trial',
-		
-		newImage('image', currentrow.IMAGE)
-			.size(size, size)
-		,
-		
-		newCanvas('image', canvas_size, canvas_size)
-			.center()
-			.add('center at 50%', 'middle at 50%', getImage('image'))
-			.print()
-		,
-		
-		newText('sentence', currentrow.SENTENCE)
+	newText(
+		`<p>You have now finished the first part of the experiment. Next, you will be shown a series of pictures.
+		Below each picture will be two words. You may not know some of these words. Try to select the word that 
+		you think matches what is in the picture, even if you may not know it.</p>
+		`
+	)
+		.css(centered_justified_style)
+		.print()		
+	,
+	
+	newButton('Click when you are ready to continue')
+		.css('font-family', 'Helvetica, sans-serif')
+		.css('font-size', '16px')
+		.center()
+		.print()
+		.wait()
+).setOption('countsForProgressBar', false)
+
+Template('preexposure.csv', currentrow => 
+	newTrial(
+		'preexposure',
+		newText('sentence', currentrow.sentence)
 			.css(centered_justified_style)
 			.print()
+		,
+		
+		newVar('RT')
+			.global()
+			.set(v => Date.now())
 		,
 		
 		newButton('Next')
@@ -105,12 +143,42 @@ Template('stimuli.csv', currentrow => {
 			.wait()
 		,
 		
-		getCanvas('image')
-			.remove()
+		getVar('RT')
+			.set(v => Date.now() - v)
+	)
+		.log('item',			   currentrow.item)
+		.log('sentence',		   currentrow.sentence)
+		.log('condition',		   currentrow.condition)
+		.log('response_time',      getVar('RT'))
+)
+
+Template('stimuli.csv', currentrow => 
+	newTrial(
+		'trial',
+		
+		newImage('image', currentrow.image)
+			.size(500, 500)
 		,
 		
-		getText('sentence')
-			.remove()
+		newCanvas('image', 550, 550)
+			.center()
+			.add('center at 50%', 'middle at 50%', getImage('image'))
+			.print()
+		,
+		
+		newText('prompt', 'Which word matches the picture above?')
+			.css(prompt_style)
+			.print()
+		,
+		
+		newText(currentrow.first_answer, currentrow.first_answer)
+			.css(answer_style)
+			.print()
+		,
+		
+		newText(currentrow.second_answer, currentrow.second_answer)
+			.css(answer_style)
+			.print()
 		,
 		
 		newVar('RT')
@@ -118,41 +186,12 @@ Template('stimuli.csv', currentrow => {
 			.set(v => Date.now())
 		,
 		
-		newText('question', currentrow.QUESTION)
-			.center()
-			.css('text-size', '16px')
-			.print()
-		,
-		
-		newText(
-			'prompt', 
-			'Which sentence has the same meaning as the sentence above? (Click to answer.)'
-		)
-			.css(prompt_style)
-			.print()
-		,
-		
-		newText(currentrow.FIRST_ANSWER_TYPE, '(a) ' + currentrow.FIRST_ANSWER)
-			.css(answer_style)
-			.print()
-		,
-		
-		newText(currentrow.SECOND_ANSWER_TYPE, '(b) ' + currentrow.SECOND_ANSWER)
-			.css(answer_style)
-			.print()
-		,
-		
-		newText(currentrow.THIRD_ANSWER_TYPE, '(c) ' + currentrow.THIRD_ANSWER)
-			.css(answer_style)
-			.print()
-		,
-		
 		newSelector('answer')
 			.add(
-				getText(currentrow.FIRST_ANSWER_TYPE), 
-				getText(currentrow.SECOND_ANSWER_TYPE), 
-				getText(currentrow.THIRD_ANSWER_TYPE)
+				getText(currentrow.first_answer), 
+				getText(currentrow.second_answer)
 			)
+			.shuffle()
 			.wait()
 			.log()
 		,
@@ -160,19 +199,13 @@ Template('stimuli.csv', currentrow => {
 		getVar('RT')
 			.set(v => Date.now() - v)
 	)
-		.log('item',			   currentrow.ITEM)
-		.log('sentence',		   currentrow.SENTENCE)
-		.log('image',			   currentrow.IMAGE)
-		.log('condition',		   currentrow.CONDITION)
-		.log('question',		   currentrow.QUESTION)
+		.log('item',			   currentrow.item)
+		.log('image',			   currentrow.image)
+		.log('condition',		   currentrow.condition)
 		.log('response_time',      getVar('RT'))
-		.log('first_answer',	   currentrow.FIRST_ANSWER)
-		.log('second_answer',	   currentrow.SECOND_ANSWER)
-		.log('third_answer',	   currentrow.THIRD_ANSWER)
-		.log('first_answer_type',  currentrow.FIRST_ANSWER_TYPE)
-		.log('second_answer_type', currentrow.SECOND_ANSWER_TYPE)
-		.log('third_answer_type',  currentrow.THIRD_ANSWER_TYPE)
-})
+		.log('first_answer',	   currentrow.first_answer)
+		.log('second_answer',	   currentrow.second_answer)
+)
 
 newTrial('end',
 	exitFullscreen()
