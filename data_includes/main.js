@@ -22,6 +22,7 @@ var answer_style = {
 }
 
 var prompt_style = {
+	'font-style': 'italic',
 	'text-align': 'justify', 
 	margin: '0 auto',
 	'margin-top': '3em',
@@ -104,8 +105,6 @@ newTrial('instructions1',
 ).setOption('countsForProgressBar', false)
 
 newTrial('instructions2',
-	fullscreen(),
-	
 	newText(
 		`<p>You have now finished the first part of the experiment. Next, you will be shown a series of pictures.
 		Below each picture will be two words. You may not know some of these words. Try to select the word that 
@@ -191,6 +190,7 @@ Template('stimuli.csv', currentrow =>
 				getText(currentrow.first_answer), 
 				getText(currentrow.second_answer)
 			)
+			.center()
 			.shuffle()
 			.wait()
 			.log()
@@ -201,7 +201,6 @@ Template('stimuli.csv', currentrow =>
 	)
 		.log('item',			   currentrow.item)
 		.log('image',			   currentrow.image)
-		.log('condition',		   currentrow.condition)
 		.log('response_time',      getVar('RT'))
 		.log('first_answer',	   currentrow.first_answer)
 		.log('second_answer',	   currentrow.second_answer)
