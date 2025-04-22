@@ -16,6 +16,7 @@ var centered_justified_style = {
 
 var answer_style = {
 	'text-align': 'center', 
+	'font-size': '1.25em',
 	margin: '0 auto', 
 	'margin-bottom': '2em',
 	width: '30em'
@@ -23,7 +24,7 @@ var answer_style = {
 
 var prompt_style = {
 	'font-style': 'italic',
-	'text-align': 'justify', 
+	'text-align': 'center', 
 	margin: '0 auto',
 	'margin-top': '3em',
 	'margin-bottom': '2em',
