@@ -7,6 +7,31 @@
 PennController.ResetPrefix(null) // Shorten command names (keep this)
 DebugOff()
 
+/* This lets us randomly shuffle the order of the mc responses.
+   From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+*/
+function shuffle(array) {
+	let currentIndex = array.length;
+	
+	// While there remain elements to shuffle...
+	while (currentIndex != 0) {
+		
+		// Pick a remaining element...
+		let randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
+		
+		// And swap it with the current element.
+		[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+	}
+}
+
+CHECKBOX_HTML_TEMPLATE = `
+	<input name="mc_answer_{answer1}" type="checkbox" id="{answer1}" value="{answer1}"><label for="{answer1}">{answer1}</label><br><br>
+	<input name="mc_answer_{answer2}" type="checkbox" id="{answer2}" value="{answer2}"><label for="{answer2}">{answer2}</label><br><br>
+	<input name="mc_answer_{answer3}" type="checkbox" id="{answer3}" value="{answer3}"><label for="{answer3}">{answer3}</label><br><br>
+	<input name="mc_answer_{answer4}" type="checkbox" id="{answer4}" value="{answer4}"><label for="{answer4}">{answer4}</label>
+`
+
 var centered_justified_style = {
 	'text-align': 'justify', 
 	margin: '0 auto', 
@@ -59,8 +84,16 @@ newTrial('instructions',
 		.wait()
 ).setOption('countsForProgressBar', false)
 
-Template('stimuli.csv', currentrow => 
-	newTrial(
+Template('stimuli.csv', currentrow => {
+	// randomize the order of the mc answers
+	let answers = [
+		currentrow.first_answer, currentrow.second_answer, 
+		currentrow.third_answer, currentrow.fourth_answer
+	];
+	
+	shuffle(answers);
+	
+	return newTrial(
 		'trial',
 		
 		newVar('RT_sentence')
@@ -127,7 +160,19 @@ Template('stimuli.csv', currentrow =>
 			.set(v => Date.now())
 		,
 		
-		newHtml('mc_question', currentrow.mc_question)
+		newText('mc_prompt', currentrow.mc_prompt)
+			.css(centered_justified_style)
+			.print()
+		,
+		
+		newHtml(
+			'mc_question', 
+			CHECKBOX_HTML_TEMPLATE
+				.replace('{answer1}', answers[0])
+				.replace('{answer2}', answers[1])
+				.replace('{answer3}', answers[2])
+				.replace('{answer4}', answers[3])
+		)
 			.css(centered_justified_style)
 			.print()
 			.log()
@@ -150,10 +195,11 @@ Template('stimuli.csv', currentrow =>
 		.log('distractor_question',      currentrow.distractor_question)
 		.log('distractor_answer',        currentrow.distractor_answer)
 		.log('group',                    currentrow.group)
+		.log('correct_answers',          currentrow.correct_answers)
 		.log('reading_time_sentence',    getVar('RT_sentence'))
 		.log('response_time_distractor', getVar('RT_distractor'))
 		.log('response_time_mc',         getVar('RT_mc'))
-)
+})
 
 newTrial('end',
 	exitFullscreen()
