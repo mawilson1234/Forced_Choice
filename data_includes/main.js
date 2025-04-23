@@ -93,6 +93,12 @@ Template('stimuli.csv', currentrow => {
 	
 	shuffle(answers);
 	
+	let mc_question = CHECKBOX_HTML_TEMPLATE
+		.replace('\{answer1\}', answers[0])
+		.replace('\{answer2\}', answers[1])
+		.replace('\{answer3\}', answers[2])
+		.replace('\{answer4\}', answers[3]);
+	
 	return newTrial(
 		'trial',
 		
@@ -165,14 +171,7 @@ Template('stimuli.csv', currentrow => {
 			.print()
 		,
 		
-		newHtml(
-			'mc_question', 
-			CHECKBOX_HTML_TEMPLATE
-				.replace('{answer1}', answers[0])
-				.replace('{answer2}', answers[1])
-				.replace('{answer3}', answers[2])
-				.replace('{answer4}', answers[3])
-		)
+		newHtml('mc_question', mc_question)
 			.css(centered_justified_style)
 			.print()
 			.log()
