@@ -25,13 +25,6 @@ function shuffle(array) {
 	}
 }
 
-CHECKBOX_HTML_TEMPLATE = `
-	<input name="mc_answer_{answer1}" type="checkbox" id="{answer1}" value="{answer1}"><label for="{answer1}">{answer1}</label><br><br>
-	<input name="mc_answer_{answer2}" type="checkbox" id="{answer2}" value="{answer2}"><label for="{answer2}">{answer2}</label><br><br>
-	<input name="mc_answer_{answer3}" type="checkbox" id="{answer3}" value="{answer3}"><label for="{answer3}">{answer3}</label><br><br>
-	<input name="mc_answer_{answer4}" type="checkbox" id="{answer4}" value="{answer4}"><label for="{answer4}">{answer4}</label>
-`
-
 var centered_justified_style = {
 	'text-align': 'justify', 
 	margin: '0 auto', 
@@ -93,12 +86,12 @@ Template('stimuli.csv', currentrow => {
 	
 	shuffle(answers);
 	
-	let mc_question = CHECKBOX_HTML_TEMPLATE
-		.replace('\{answer1\}', answers[0])
-		.replace('\{answer2\}', answers[1])
-		.replace('\{answer3\}', answers[2])
-		.replace('\{answer4\}', answers[3]);
-	
+	let mc_question = `
+		<input name="mc_answer_${answers[0]}" type="checkbox" id="${answers[0]}" value="${answers[0]}"><label for="${answers[0]}">${answers[0]}</label><br><br>
+		<input name="mc_answer_${answers[1]}" type="checkbox" id="${answers[1]}" value="${answers[1]}"><label for="${answers[1]}">${answers[1]}</label><br><br>
+		<input name="mc_answer_${answers[2]}" type="checkbox" id="${answers[2]}" value="${answers[2]}"><label for="${answers[2]}">${answers[2]}</label><br><br>
+		<input name="mc_answer_${answers[3]}" type="checkbox" id="${answers[3]}" value="${answers[3]}"><label for="${answers[3]}">${answers[3]}</label>
+	`
 	return newTrial(
 		'trial',
 		
