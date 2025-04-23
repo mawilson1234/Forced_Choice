@@ -122,6 +122,11 @@ Template('stimuli.csv', currentrow =>
 			.remove()
 		,
 		
+		newVar('RT_mc')
+			.global()
+			.set(v => Date.now())
+		,
+		
 		newHtml('mc_question', currentrow.mc_question)
 			.css(centered_justified_style)
 			.print()
@@ -134,6 +139,10 @@ Template('stimuli.csv', currentrow =>
 			.center()
 			.print()
 			.wait()
+		,
+		
+		getVar('RT_mc')
+			.set(v => Date.now() - v)
 	)
 		.log('item',			         currentrow.item)
 		.log('sentence',		         currentrow.sentence)
