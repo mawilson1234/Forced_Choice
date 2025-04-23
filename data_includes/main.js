@@ -124,7 +124,7 @@ Template('stimuli.csv', currentrow =>
 			.log()
 		,
 		
-		newButton('Next', 'Next')
+		newButton('Next2', 'Next')
 			.css('font-family', 'Helvetica, sans-serif')
 			.css('font-size', '16px')
 			.center()
