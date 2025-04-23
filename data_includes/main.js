@@ -137,7 +137,7 @@ Template('stimuli.csv', currentrow =>
 		.log('distractor_question',      currentrow.distractor_question)
 		.log('distractor_answer',        currentrow.distractor_answer)
 		.log('group'					 currentrow.group)
-		.log('reading_time_sentence',    getVar('RT_sentence')),
+		.log('reading_time_sentence',    getVar('RT_sentence'))
 		.log('response_time_distractor', getVar('RT_distractor'))
 		.log('response_time_mc',         getVar('RT_mc'))
 )
