@@ -87,6 +87,10 @@ Template('stimuli.csv', currentrow =>
 			.remove()
 		,
 		
+		getButton('Next')
+			.remove()
+		,
+		
 		newVar('RT_distractor')
 			.global()
 			.set(v => Date.now())
