@@ -212,12 +212,11 @@ Template('stimuli.csv', currentrow => {
 			.set(v => Date.now() - v)
 	)
 		.log('item',			   currentrow.item)
-		.log('image',			   currentrow.image)
-		.log('word',               currentrow.word)
-		.log('response_time',      getVar('RT'))
-		.log('correct_image',	   currentrow.correct_image)
 		.log('image1',             image1)
 		.log('image2',             image2)
+		.log('word',               currentrow.word)
+		.log('correct_image',	   currentrow.correct_image)
+		.log('response_time',      getVar('RT'))
 })
 
 newTrial('end',
