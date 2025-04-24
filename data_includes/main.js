@@ -7,9 +7,8 @@
 PennController.ResetPrefix(null) // Shorten command names (keep this)
 DebugOff()
 
-/* This lets us randomly shuffle the order of the mc responses.
-   From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-*/
+// This lets us randomly shuffle the order of the mc responses.
+// From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
 	let currentIndex = array.length;
 	
