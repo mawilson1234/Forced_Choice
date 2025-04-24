@@ -154,6 +154,7 @@ Template('preexposure.csv', currentrow =>
 )
 
 Template('stimuli.csv', currentrow => {
+	var im1 = 'left_image'
 	
 	var image1 = currentrow.image1;
 	var image2 = currentrow.image2;
@@ -212,8 +213,8 @@ Template('stimuli.csv', currentrow => {
 			.set(v => Date.now() - v)
 	)
 		.log('item',			   currentrow.item)
-		.log('image1',             image1)
-		.log('image2',             image2)
+		.log('left_image',         image1)
+		.log('right_image',        image2)
 		.log('word',               currentrow.word)
 		.log('correct_image',	   currentrow.correct_image)
 		.log('response_time',      getVar('RT'))
