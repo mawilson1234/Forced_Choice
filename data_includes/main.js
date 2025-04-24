@@ -87,10 +87,12 @@ Template('stimuli.csv', currentrow => {
 	shuffle(answers);
 	
 	let mc_question = `
-		<input name="mc_answer_${answers[0]}" type="checkbox" id="${answers[0]}" value="${answers[0]}"><label for="${answers[0]}">${answers[0]}</label><br><br>
-		<input name="mc_answer_${answers[1]}" type="checkbox" id="${answers[1]}" value="${answers[1]}"><label for="${answers[1]}">${answers[1]}</label><br><br>
-		<input name="mc_answer_${answers[2]}" type="checkbox" id="${answers[2]}" value="${answers[2]}"><label for="${answers[2]}">${answers[2]}</label><br><br>
-		<input name="mc_answer_${answers[3]}" type="checkbox" id="${answers[3]}" value="${answers[3]}"><label for="${answers[3]}">${answers[3]}</label>
+		<form id="sectionForm" method="post">
+			<input name="mc_answer_${answers[0]}" type="checkbox" id="${answers[0]}" value="${answers[0]}"><label for="${answers[0]}">${answers[0]}</label><br><br>
+			<input name="mc_answer_${answers[1]}" type="checkbox" id="${answers[1]}" value="${answers[1]}"><label for="${answers[1]}">${answers[1]}</label><br><br>
+			<input name="mc_answer_${answers[2]}" type="checkbox" id="${answers[2]}" value="${answers[2]}"><label for="${answers[2]}">${answers[2]}</label><br><br>
+			<input name="mc_answer_${answers[3]}" type="checkbox" id="${answers[3]}" value="${answers[3]}"><label for="${answers[3]}">${answers[3]}</label>
+		</form>
 	`
 	return newTrial(
 		'trial',
@@ -182,7 +184,45 @@ Template('stimuli.csv', currentrow => {
 			.print()
 		,
 		
-		newHtml('mc_question', mc_question)
+		newHtml('mc_question', mc_question +
+			`<script>
+				(function() {
+				    const form = document.querySelector('#sectionForm');
+				    const checkboxes = form.querySelectorAll('input[type=checkbox]');
+				    const checkboxLength = checkboxes.length;
+				    const firstCheckbox = checkboxLength > 0 ? checkboxes[0] : null;
+
+				    function init() {
+				        if (firstCheckbox) {
+				            for (let i = 0; i < checkboxLength; i++) {
+				                checkboxes[i].addEventListener('change', checkValidity);
+				            }
+
+				            checkValidity();
+				        }
+				    }
+
+				    function isChecked(n) {
+						let n_checked = 0;
+				        for (let i = 0; i < checkboxLength; i++) {
+				            if (checkboxes[i].checked) n_checked++;
+				        }
+						
+						if (n_checked >= n) return true;
+						
+				        return false;
+				    }
+
+				    function checkValidity() {
+				        const errorMessage = !isChecked(3) ? 'At least three checkboxes must be selected.' : '';
+				        firstCheckbox.setCustomValidity(errorMessage);
+				    }
+
+				    init();
+				})();
+				</script>
+			`
+		)
 			.css(centered_justified_style)
 			.print()
 			.log()
