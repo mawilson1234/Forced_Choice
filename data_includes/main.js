@@ -239,8 +239,8 @@ Template('stimuli.csv', currentrow => {
 			.print()
 			.wait(
 				getFunction('checked')
-					.test.is(true)
-					.failure(
+					.test.is()
+					.success(
 						getText('incorrect2')
 							.print()
 					)
