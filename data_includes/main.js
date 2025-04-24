@@ -200,7 +200,7 @@ Template('stimuli.csv', currentrow => {
 		
 		newSelector('answer')
 			.add(
-				getImage('image1')
+				getImage('image1'),
 				getImage('image2')
 			)
 			.center()
