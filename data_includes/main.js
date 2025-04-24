@@ -156,7 +156,7 @@ Template('stimuli.csv', currentrow => {
 			.print()
 			.wait(
 				getTextInput('distractor_response')
-					.test.text(RegExp('^' + currentrow.distractor_answer + '$', 'i')
+					.test.text(RegExp('^' + currentrow.distractor_answer + '$', 'i'))
 					.success(
 						getText('incorrect')
 							.remove()
