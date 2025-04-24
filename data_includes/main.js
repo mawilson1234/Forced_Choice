@@ -144,7 +144,6 @@ Template('stimuli.csv', currentrow => {
 		
 		newTextInput('distractor_response')
 			.css(centered_justified_style)
-			// .log()
 			.lines(1)
 			.print()
 			.wait(
@@ -189,7 +188,7 @@ Template('stimuli.csv', currentrow => {
 			.log()
 		,
 		
-		newButton('Next3', 'Next')
+		newButton('Next2', 'Next')
 			.css('font-family', 'Helvetica, sans-serif')
 			.css('font-size', '16px')
 			.center()
