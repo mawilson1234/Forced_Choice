@@ -90,8 +90,8 @@ newTrial('instructions1',
 	newText(
 		`<p>Welcome! In this experiment, you will first read a series of sentences. Some of the sentences
 		 may contain words you don't know. Try to read and understand the sentences as best you can.</p>
-		<p>After you have read the sentences, you will be shown a series of pictures, and should pick the word
-		that matches what is in the picture.</p>
+		<p>After you have read the sentences, you will be shown a word along with two pictures. You should 
+		click on the image that best matches the word.</p>
 		`
 	)
 		.css(centered_justified_style)
@@ -108,9 +108,9 @@ newTrial('instructions1',
 
 newTrial('instructions2',
 	newText(
-		`<p>You have now finished the first part of the experiment. Next, you will be shown a series of pictures.
-		Below each picture will be two words. You may not know some of these words. Try to select the word that 
-		you think matches what is in the picture, even if you may not know it.</p>
+		`<p>You have now finished the first part of the experiment. Next, you will be shown trials with a word 
+		and two pictures. You may not know some of the words. Try to click the picture that 
+		you think matches the word, even if you may not know that word.</p>
 		`
 	)
 		.css(centered_justified_style)
