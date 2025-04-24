@@ -136,7 +136,7 @@ Template('stimuli.csv', currentrow => {
 		
 		newText(
 			"incorrect", 
-			"That's not the correct answer. Please try again, and press \"Next\" when you're finished."
+			"That's not the correct answer. Please try again."
 		)
 			.css('color', 'rgb(188, 74, 60)')
 			.center()
@@ -146,13 +146,6 @@ Template('stimuli.csv', currentrow => {
 			.css(centered_justified_style)
 			// .log()
 			.lines(1)
-			.print()
-		,
-		
-		newButton('Next2', 'Next')
-			.css('font-family', 'Helvetica, sans-serif')
-			.css('font-size', '16px')
-			.center()
 			.print()
 			.wait(
 				getTextInput('distractor_response')
@@ -173,10 +166,6 @@ Template('stimuli.csv', currentrow => {
 		,
 		
 		getText('distractor')
-			.remove()
-		,
-		
-		getButton('Next2')
 			.remove()
 		,
 		
