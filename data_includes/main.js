@@ -192,7 +192,7 @@ Template('stimuli.csv', currentrow => {
 		
 		newFunction(
 			'checked',
-			`function() {
+			function() {
 				const form = document.querySelector('#sectionForm');
 				const checkboxes = form.querySelectorAll('input[type=checkbox]');
 				const checkboxLength = checkboxes.length;
@@ -220,7 +220,7 @@ Template('stimuli.csv', currentrow => {
 				}
 
 				init();
-			}`
+			}
 		)
 		,
 		
@@ -239,8 +239,8 @@ Template('stimuli.csv', currentrow => {
 			.print()
 			.wait(
 				getFunction('checked')
-					.test.is()
-					.success(
+					.test.is(true)
+					.failure(
 						getText('incorrect2')
 							.print()
 					)
