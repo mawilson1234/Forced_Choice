@@ -188,8 +188,8 @@ Template('stimuli.csv', currentrow => {
 		
 		newCanvas('image', 1100, 550)
 			.center()
-			.add('center at 25%', 'middle at 50%', getImage('image1'))
-			.add('center at 75%', 'middle at 50%', getImage('image2'))
+			.add('center at 25%', 'middle at 50%', getImage('left_image'))
+			.add('center at 75%', 'middle at 50%', getImage('right_image'))
 			.print()
 		,
 		
@@ -200,8 +200,8 @@ Template('stimuli.csv', currentrow => {
 		
 		newSelector('answer')
 			.add(
-				getImage('image1'),
-				getImage('image2')
+				getImage('left_image'),
+				getImage('right_image')
 			)
 			.center()
 			.wait()
