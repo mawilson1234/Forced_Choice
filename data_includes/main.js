@@ -200,10 +200,10 @@ Template('stimuli.csv', currentrow => {
 
 				function init() {
 					if (firstCheckbox) {
-						for (let i = 0; i < checkboxLength; i++) {
-							checkboxes[i].addEventListener('change', checkValidity);
-						}
-
+						// for (let i = 0; i < checkboxLength; i++) {
+						// 	checkboxes[i].addEventListener('change', checkValidity);
+						// }
+						
 						return isChecked();
 					}
 				}
