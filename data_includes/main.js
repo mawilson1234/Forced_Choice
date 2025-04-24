@@ -168,7 +168,7 @@ Template('stimuli.csv', currentrow => {
 	return newTrial(
 		'trial',
 		
-		newText('prompt', 'Which image matches the word?')
+		newText('prompt', 'Which picture matches the word?')
 			.css(prompt_style)
 			.print()
 		,
