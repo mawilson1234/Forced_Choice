@@ -159,7 +159,7 @@ Template('stimuli.csv', currentrow => {
 	var image2 = currentrow.image2;
 	
 	// randomize the order of the images
-	let n = math.random();
+	let n = Math.random();
 	if (n >= 0.5) {
 		var image2 = currentrow.image1;
 		var image1 = currentrow.image2;
