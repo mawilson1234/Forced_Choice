@@ -226,7 +226,7 @@ Template('stimuli.csv', currentrow => {
 		
 		newText(
 			"incorrect2", 
-			"That's not the correct answer. Please try again."
+			"Please select at least three options."
 		)
 			.css('color', 'rgb(188, 74, 60)')
 			.center()
@@ -240,10 +240,6 @@ Template('stimuli.csv', currentrow => {
 			.wait(
 				getFunction('checked')
 					.test.is(true)
-					.success(
-						getText('incorrect2')
-							.print()
-					)
 					.failure(
 						getText('incorrect2')
 							.print()
