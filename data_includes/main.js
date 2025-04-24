@@ -165,7 +165,7 @@ Template('stimuli.csv', currentrow => {
 		var image1 = currentrow.image2;
 	}
 	
-	newTrial(
+	return newTrial(
 		'trial',
 		
 		newText('prompt', 'Which image matches the word?')
