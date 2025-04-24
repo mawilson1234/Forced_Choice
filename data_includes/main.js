@@ -19,7 +19,8 @@ var answer_style = {
 	'font-size': '1.25em',
 	margin: '0 auto', 
 	'margin-bottom': '2em',
-	width: '30em'
+	width: '30em',
+	'font-weight': 'bold'
 }
 
 var prompt_style = {
@@ -152,32 +153,43 @@ Template('preexposure.csv', currentrow =>
 		.log('response_time',      getVar('RT'))
 )
 
-Template('stimuli.csv', currentrow => 
+Template('stimuli.csv', currentrow => {
+	
+	var image1 = currentrow.image1;
+	var image2 = currentrow.image2;
+	
+	// randomize the order of the images
+	let n = math.random();
+	if (n >= 0.5) {
+		var image2 = currentrow.image1;
+		var image1 = currentrow.image2;
+	}
+	
 	newTrial(
 		'trial',
 		
-		newImage('image', currentrow.image)
-			.size(500, 500)
-		,
-		
-		newCanvas('image', 550, 550)
-			.center()
-			.add('center at 50%', 'middle at 50%', getImage('image'))
-			.print()
-		,
-		
-		newText('prompt', 'Which word matches the picture above?')
+		newText('prompt', 'Which image matches the word?')
 			.css(prompt_style)
 			.print()
 		,
 		
-		newText(currentrow.first_answer, currentrow.first_answer)
+		newText('word', currentrow.word)
 			.css(answer_style)
 			.print()
 		,
 		
-		newText(currentrow.second_answer, currentrow.second_answer)
-			.css(answer_style)
+		newImage('left_image', image1)
+			.size(500, 500)
+		,
+		
+		newImage('right_image', image2)
+			.size(500, 500)
+		,
+		
+		newCanvas('image', 1100, 550)
+			.center()
+			.add('center at 25%', 'middle at 50%', getImage('image1'))
+			.add('center at 75%', 'middle at 50%', getImage('image2'))
 			.print()
 		,
 		
@@ -188,11 +200,10 @@ Template('stimuli.csv', currentrow =>
 		
 		newSelector('answer')
 			.add(
-				getText(currentrow.first_answer), 
-				getText(currentrow.second_answer)
+				getImage('image1')
+				getImage('image2')
 			)
 			.center()
-			.shuffle()
 			.wait()
 			.log()
 		,
@@ -202,10 +213,12 @@ Template('stimuli.csv', currentrow =>
 	)
 		.log('item',			   currentrow.item)
 		.log('image',			   currentrow.image)
+		.log('word',               currentrow.word)
 		.log('response_time',      getVar('RT'))
-		.log('first_answer',	   currentrow.first_answer)
-		.log('second_answer',	   currentrow.second_answer)
-)
+		.log('correct_image',	   currentrow.correct_image)
+		.log('image1',             image1)
+		.log('image2',             image2)
+})
 
 newTrial('end',
 	exitFullscreen()

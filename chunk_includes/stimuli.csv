@@ -1,2 +1,2 @@
-﻿item,image,first_answer,second_answer
-1,item01.jpg,dog,gato
+﻿item,image1,image2,word,correct_image
+1,item01.jpg,item01.jpg,dog,gato,item01.jpg
