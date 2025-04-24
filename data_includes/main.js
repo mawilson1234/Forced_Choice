@@ -196,37 +196,22 @@ Template('stimuli.csv', currentrow => {
 				var form = document.querySelector('#sectionForm');
 				var checkboxes = form.querySelectorAll('input[type=checkbox]');
 				var checkboxLength = checkboxes.length;
-				var firstCheckbox = checkboxLength > 0 ? checkboxes[0] : null;
-
-				function init() {
-					if (firstCheckbox) {
-						// for (let i = 0; i < checkboxLength; i++) {
-						// 	checkboxes[i].addEventListener('change', checkValidity);
-						// }
-						
-						return isChecked();
-					}
+				var n_checked = 0;
+				
+				for (let i = 0; i < checkboxLength; i++) {
+					if (checkboxes[i].checked) n_checked++;
 				}
-
-				function isChecked() {
-					let n_checked = 0;
-					for (let i = 0; i < checkboxLength; i++) {
-						if (checkboxes[i].checked) n_checked++;
-					}
-					
-					if (n_checked == 3) return true;
-					
-					return false;
-				}
-
-				return init();
+				
+				if (n_checked == 3) return true;
+				
+				return false;
 			}
 		)
 		,
 		
 		newText(
-			"incorrect2", 
-			"Please select at least three options."
+			'incorrect2', 
+			'Please select at least three options.'
 		)
 			.css('color', 'rgb(188, 74, 60)')
 			.center()
