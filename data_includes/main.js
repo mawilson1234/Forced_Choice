@@ -134,12 +134,41 @@ Template('stimuli.csv', currentrow => {
 			.print()
 		,
 		
+		newText(
+			"incorrect", 
+			"That's not the correct answer. Please try again, and press \"Next\" when you're finished."
+		)
+			.css('color', 'rgb(188, 74, 60)')
+			.center()
+		,
+		
 		newTextInput('distractor_response')
 			.css(centered_justified_style)
-			.log()
+			// .log()
 			.lines(1)
 			.print()
-			.wait()
+			.test.text(currentrow.distractor_answer)
+				.success(
+					getText('incorrect').remove()
+				)
+		,
+		
+		newButton('Next2', 'Next')
+			.css('font-family', 'Helvetica, sans-serif')
+			.css('font-size', '16px')
+			.center()
+			.print()
+			.wait(
+				getTextInput('distractor_response')
+					.test.text(currentrow.distractor_answer)
+					.failure(
+						getTextInput('distractor_response')
+							.test.text(currentrow.distractor_answer.toLowerCase())
+							.failure(
+								getText('incorrect').print()
+							)
+					)
+			)
 		,
 		
 		getVar('RT_distractor')
@@ -147,6 +176,10 @@ Template('stimuli.csv', currentrow => {
 		,
 		
 		getText('distractor')
+			.remove()
+		,
+		
+		getButton('Next2')
 			.remove()
 		,
 		
@@ -170,7 +203,7 @@ Template('stimuli.csv', currentrow => {
 			.log()
 		,
 		
-		newButton('Next2', 'Next')
+		newButton('Next3', 'Next')
 			.css('font-family', 'Helvetica, sans-serif')
 			.css('font-size', '16px')
 			.center()
@@ -185,7 +218,6 @@ Template('stimuli.csv', currentrow => {
 		.log('sentence',		         currentrow.sentence)
 		.log('condition',		         currentrow.condition)
 		.log('distractor_question',      currentrow.distractor_question)
-		.log('distractor_answer',        currentrow.distractor_answer)
 		.log('group',                    currentrow.group)
 		.log('correct_answers',          currentrow.correct_answers)
 		.log('reading_time_sentence',    getVar('RT_sentence'))
