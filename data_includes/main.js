@@ -193,10 +193,10 @@ Template('stimuli.csv', currentrow => {
 		newFunction(
 			'checked',
 			function() {
-				const form = document.querySelector('#sectionForm');
-				const checkboxes = form.querySelectorAll('input[type=checkbox]');
-				const checkboxLength = checkboxes.length;
-				const firstCheckbox = checkboxLength > 0 ? checkboxes[0] : null;
+				var form = document.querySelector('#sectionForm');
+				var checkboxes = form.querySelectorAll('input[type=checkbox]');
+				var checkboxLength = checkboxes.length;
+				var firstCheckbox = checkboxLength > 0 ? checkboxes[0] : null;
 
 				function init() {
 					if (firstCheckbox) {
@@ -219,7 +219,7 @@ Template('stimuli.csv', currentrow => {
 					return false;
 				}
 
-				init();
+				return init();
 			}
 		)
 		,
