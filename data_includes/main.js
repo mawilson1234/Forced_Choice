@@ -147,10 +147,6 @@ Template('stimuli.csv', currentrow => {
 			// .log()
 			.lines(1)
 			.print()
-			.test.text(currentrow.distractor_answer)
-				.success(
-					getText('incorrect').remove()
-				)
 		,
 		
 		newButton('Next2', 'Next')
@@ -160,13 +156,14 @@ Template('stimuli.csv', currentrow => {
 			.print()
 			.wait(
 				getTextInput('distractor_response')
-					.test.text(currentrow.distractor_answer)
+					.test.text(RegExp('^' + currentrow.distractor_answer + '$', 'i')
+					.success(
+						getText('incorrect')
+							.remove()
+					)
 					.failure(
-						getTextInput('distractor_response')
-							.test.text(currentrow.distractor_answer.toLowerCase())
-							.failure(
-								getText('incorrect').print()
-							)
+						getText('incorrect')
+							.print()
 					)
 			)
 		,
