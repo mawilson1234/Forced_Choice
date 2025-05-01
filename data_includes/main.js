@@ -43,7 +43,7 @@ Sequence(
 	'preload',
 	'preloaded',
 	randomize(preexposure),
-	'instructions2',
+	instructions2_preexposure,
 	randomize('trial') ,
 	SendResults(),
 	'end'
@@ -246,6 +246,8 @@ Template('preexposure.csv', currentrow =>
 )
 
 newTrial('nopreexposure')
+
+newTrial('instructions2_nopreexposure')
 
 Template('stimuli.csv', currentrow => {
 	var im1 = 'left_image'
