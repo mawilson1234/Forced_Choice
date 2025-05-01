@@ -7,7 +7,7 @@
 PennController.ResetPrefix(null) // Shorten command names (keep this)
 DebugOff()
 
-var v = Math.random()
+var v = Math.random();
 var preexposure = v > 0.5 ? 'preexposure' : 'nopreexposure';
 var instructions_preexposure = `instructions_${preexposure}`
 var instructions2_preexposure = `instructions2_${preexposure}`
