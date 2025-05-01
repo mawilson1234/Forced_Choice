@@ -94,9 +94,11 @@ newTrial('instructions_preexposure',
 	
 	newText(
 		`<p>Welcome! In this experiment, you will first read a series of sentences. Some of the sentences
-		 may contain words you don't know. Try to read and understand the sentences as best you can.</p>
-		<p>After you have read the sentences, you will be shown a word along with two pictures. You should 
-		click on the image that best matches the word.</p>
+		 may contain words you don't know. Try to read and understand the sentences as best you can. After each
+		 sentence, you will see a multiple choice question about that sentence, and you should click on what you
+		 think the best answer to that question is.</p>
+		<p>After you have read the sentences and responded to the questions, you will be shown a word along with 
+		two pictures. You should click on the image that best matches the word.</p>
 		`
 	)
 		.css(centered_justified_style)
@@ -168,6 +170,14 @@ Template('preexposure.csv', currentrow =>
 			.center()
 			.print()
 			.wait()
+		,
+		
+		getText('sentence')
+			.remove()
+		,
+		
+		getButton('Next')
+			.remove()
 		,
 		
 		getVar('answer_RT')
