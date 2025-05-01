@@ -7,6 +7,10 @@
 PennController.ResetPrefix(null) // Shorten command names (keep this)
 DebugOff()
 
+var preexposure = Math.random() > 0.5 ? 'preexposure' : 'nopreexposure';
+var instructions_preexposure = `instructions_${preexposure}`
+var instructions2_preexposure = `instructions2_${preexposure}`
+
 var centered_justified_style = {
 	'text-align': 'justify', 
 	margin: '0 auto', 
@@ -34,10 +38,10 @@ var prompt_style = {
 
 Sequence(
 	'demographics',
-	'instructions1',
+	instructions_preexposure,
 	'preload',
 	'preloaded',
-	randomize('preexposure'),
+	randomize(preexposure),
 	'instructions2',
 	randomize('trial') ,
 	SendResults(),
@@ -84,7 +88,7 @@ newTrial('demographics',
 		)
 ).setOption('countsForProgressBar', false)
 
-newTrial('instructions1',
+newTrial('instructions_preexposure',
 	fullscreen(),
 	
 	newText(
@@ -106,7 +110,7 @@ newTrial('instructions1',
 		.wait()
 ).setOption('countsForProgressBar', false)
 
-newTrial('instructions2',
+newTrial('instructions2_preexposure',
 	newText(
 		`<p>You have now finished the first part of the experiment. Next, you will be shown trials with a word 
 		and two pictures. You may not know some of the words. Try to click the picture that 
@@ -118,6 +122,27 @@ newTrial('instructions2',
 	,
 	
 	newButton('Click when you are ready to continue')
+		.css('font-family', 'Helvetica, sans-serif')
+		.css('font-size', '16px')
+		.center()
+		.print()
+		.wait()
+).setOption('countsForProgressBar', false)
+
+newTrial('instructions_nopreexposure',
+	fullscreen(),
+	
+	newText(
+		`<p>Welcome! In this experiment, you will be shown a word and two pictures. You may not know 
+		some of the words. Try to click the picture that you think matches the word, even if you may 
+		not know that word.</p></p>
+		`
+	)
+		.css(centered_justified_style)
+		.print()		
+	,
+	
+	newButton('Click when you are ready to begin')
 		.css('font-family', 'Helvetica, sans-serif')
 		.css('font-size', '16px')
 		.center()
@@ -151,7 +176,10 @@ Template('preexposure.csv', currentrow =>
 		.log('sentence',		   currentrow.sentence)
 		.log('condition',		   currentrow.condition)
 		.log('response_time',      getVar('RT'))
+		.log('preexposure',        preexposure)
 )
+
+newTrial('nopreexposure')
 
 Template('stimuli.csv', currentrow => {
 	var im1 = 'left_image'
@@ -218,6 +246,7 @@ Template('stimuli.csv', currentrow => {
 		.log('word',               currentrow.word)
 		.log('correct_image',	   currentrow.correct_image)
 		.log('response_time',      getVar('RT'))
+		.log('preexposure',        preexposure)
 })
 
 newTrial('end',
