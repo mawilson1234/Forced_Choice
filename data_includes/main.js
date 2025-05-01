@@ -169,14 +169,69 @@ Template('preexposure.csv', currentrow =>
 			.wait()
 		,
 		
+		getVar('answer_RT')
+			.set(v => Date.now() - v)
+		,
+		
+		newText(
+			'prompt', 
+			currentrow.question
+		)
+			.css(prompt_style)
+			.print()
+		,
+		
+		newText('first_answer', currentrow.first_answer)
+			.css(answer_style)
+			.print()
+		,
+		
+		newText('second_answer', currentrow.second_answer)
+			.css(answer_style)
+			.print()
+		,
+		
+		newText('third_answer', currentrow.third_answer)
+			.css(answer_style)
+			.print()
+		,
+		
+		newText('fourth_answer', currentrow.fourth_answer)
+			.css(answer_style)
+			.print()
+		,
+		
+		newVar('answer_RT')
+			.global()
+			.set(v => Date.now())
+		,
+		
+		newSelector('answer')
+			.add(
+				getText("first_answer"), 
+				getText("second_answer"),
+				getText("third_answer"),
+				getText("fourth_answer")
+			)
+			.shuffle()
+			.wait()
+			.log()
+		,
+		
 		getVar('RT')
 			.set(v => Date.now() - v)
 	)
 		.log('item',			   currentrow.item)
 		.log('sentence',		   currentrow.sentence)
-		.log('condition',		   currentrow.condition)
 		.log('response_time',      getVar('RT'))
 		.log('preexposure',        preexposure)
+		.log('question',           currentrow.question)
+		.log('answer_RT',          getVar('answer_RT'))
+		.log('first_answer',       first_answer)
+		.log('second_answer',      second_answer)
+		.log('third_answer',       third_answer)
+		.log('fourth_answer',      fourth_answer)
+		.log('correct_answer',     correct_answer)
 )
 
 newTrial('nopreexposure')

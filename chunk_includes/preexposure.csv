@@ -1,3 +1,2 @@
-group,item,sentence,condition
-A,1,"Orange <b>gatos</b> love to laze in the sun, drink milk, and stalk mice.",pre-exposure
-B,1,"Orange <b>cats</b> love to laze in the sun, drink milk, and stalk mice.",no pre-exposure
+item,sentence,question,first_answer,second_answer,third_answer,fourth_answer,correct_answer
+1,"Orange <b>gatos</b> love to laze in the sun, drink milk, and stalk mice.",What do you think <b>gato</b> means?,cat,dog,tree,car,cat
